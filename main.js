@@ -21,11 +21,11 @@ camera.position.setZ(30);
 renderer.render(scene, camera);
 
 function animate(){
-  requestAnimationFrame(animate);
   renderer.render(scene, camera);
   torus.rotation.x += 0.01;
   torus.rotation.y += 0.005;
   torus.rotation.y += 0.01;
- }
-  
- animate()
+  requestAnimationFrame(animate);
+}
+
+window.requestAnimationFrame(animate);

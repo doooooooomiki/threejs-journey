@@ -7,8 +7,8 @@ const scene = new THREE.Scene();
 
 const geometry = new THREE.TorusGeometry(1, 0.4, 16, 100);
 const material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe:true});
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+const torus = new THREE.Mesh(geometry, material);
+scene.add(torus);
 
 const fov = 75; // field of view
 const sizes = {
@@ -25,9 +25,9 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 
 function animate() {
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.005;
-  cube.rotation.y += 0.01;
+  torus.rotation.x += 0.01;
+  torus.rotation.y += 0.005;
+  torus.rotation.y += 0.01;
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
 }

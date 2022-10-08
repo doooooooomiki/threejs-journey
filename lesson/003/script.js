@@ -2,6 +2,7 @@ import '/style.css';
 import * as THREE from 'three';
 
 const canvas = document.querySelector('.webgl');
+let resizeObserverFiredEvent = false;
 
 // A Scene in three.js is the root of a form of scene graph. 
 // Anything you want three.js to draw needs to be added to the scene
@@ -36,31 +37,22 @@ scene.add(camera);
 
 const renderer = new THREE.WebGLRenderer({canvas});
 
-function resizeRendererToDisplaySize(renderer) {
-  const canvas = renderer.domElement;
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
-  const needsToBeResized = canvas.width !== width || canvas.height !== height;
-  if (needsToBeResized) {
-    // Resizes the output canvas to (width, height) with device
-    // pixel ratio taken into account, and also sets the viewport
-    // to fit that size, starting in (0, 0). Setting updateStyle 
-    // to false prevents any style changes to the output canvas.
-    renderer.setSize(width, height, false);
-  }
-
-  return needsToBeResized;
-}
-
 function animate(time) {
   time *= 0.001 // convert time to seconds
 
-  if (resizeRendererToDisplaySize(renderer)) {
+  if (resizeObserverFiredEvent) {
     const canvas = renderer.domElement;
-    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    
+    renderer.setSize(width, height, false);
+  
+    camera.aspect = width / height;
     // Updates the camera projection matrix. 
     // Must be called after any change of parameters.
     camera.updateProjectionMatrix();
+
+    resizeObserverFiredEvent = false;
   }
   
   torus.rotation.x = time;
@@ -73,3 +65,7 @@ function animate(time) {
 }
 
 window.requestAnimationFrame(animate);
+
+
+const resizeObserver = new ResizeObserver(() => resizeObserverFiredEvent = true);
+resizeObserver.observe(renderer.domElement);

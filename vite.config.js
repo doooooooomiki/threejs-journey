@@ -8,7 +8,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         _003: resolve(__dirname, 'lesson/003/index.html'),
-        _004: resolve(__dirname, 'lesson/004/index.html'),
+        _005: resolve(__dirname, 'lesson/005/index.html'),
       }
     }
   }

@@ -1,36 +1,63 @@
 import '/style.css';
 import * as THREE from 'three';
 
-const canvas = document.querySelector('.webgl');
-
+// A Scene in three.js is the root of a form of scene graph. 
+// Anything you want three.js to draw needs to be added to the scene
 const scene = new THREE.Scene();
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe:true});
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
-
-const fov = 75; // field of view
-const sizes = {
-  width: 800,
-  height: 600
-};
-const camera = new THREE.PerspectiveCamera(fov, sizes.width / sizes.height);
-camera.position.z = 3;
-camera.position.x = 1;
+// field of view (in this case 75 deg in the vertical dimension)
+const fov = 75;
+// aspect ratio of the canvas
+const aspect = window.innerWidth / window.innerHeight;
+// near and far represent the space in front of the camera 
+// that will be rendered. Anything before that range or after 
+// that range will be clipped (not drawn).
+const near = 0.1;
+const far = 5;
+const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+camera.position.z = 2;
 scene.add(camera);
 
-const renderer = new THREE.WebGLRenderer({
-  canvas: canvas,
-});
-renderer.setSize(sizes.width, sizes.height);
+const geometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+const material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe:true});
 
-function animate() {
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.005;
-  cube.rotation.y += 0.01;
+const cubeA = new THREE.Mesh( geometry, material );
+cubeA.position.set( 0, 0, 0 );
+
+const cubeB = new THREE.Mesh( geometry, material );
+cubeB.position.set( -0.8, 0, 0);
+
+const cubeC = new THREE.Mesh( geometry, material );
+cubeC.position.set(0.8, 0, 0);
+
+// This is almost identical to an Object3D. 
+// Its purpose is to make working with groups of objects 
+// syntactically clearer.
+const group = new THREE.Group();
+group.add(cubeA);
+group.add(cubeB);
+group.add(cubeC);
+
+scene.add(group);
+camera.lookAt(group.position);
+
+const renderer = new THREE.WebGLRenderer({
+  canvas: document.querySelector('.webgl'),
+});
+
+function onResize() {
+  const canvas = renderer.domElement;
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  
+  camera.aspect = width / height;
+  // Updates the camera projection matrix. 
+  // Must be called after any change of parameters.
+  camera.updateProjectionMatrix();
+  
+  renderer.setSize(width, height, false);
   renderer.render(scene, camera);
-  window.requestAnimationFrame(animate);
 }
 
-window.requestAnimationFrame(animate);
+const resizeObserver = new ResizeObserver(onResize);
+resizeObserver.observe(renderer.domElement);

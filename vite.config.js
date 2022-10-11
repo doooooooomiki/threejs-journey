@@ -11,6 +11,7 @@ export default defineConfig({
         _003: resolve(__dirname, 'src/lesson/003/index.html'),
         _005: resolve(__dirname, 'src/lesson/005/index.html'),
         _006: resolve(__dirname, 'src/lesson/006/index.html'),
+        _007: resolve(__dirname, 'src/lesson/007/index.html'),
       },
       output: {
         dir: 'dist',

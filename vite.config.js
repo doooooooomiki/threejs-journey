@@ -10,6 +10,7 @@ export default defineConfig({
         main: resolve(__dirname, 'src/index.html'),
         _003: resolve(__dirname, 'src/lesson/003/index.html'),
         _005: resolve(__dirname, 'src/lesson/005/index.html'),
+        _006: resolve(__dirname, 'src/lesson/006/index.html'),
       },
       output: {
         dir: 'dist',

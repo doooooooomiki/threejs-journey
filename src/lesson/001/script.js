@@ -1,4 +1,6 @@
 import './style.css';
+import threeToneUrl from './threeTone.jpeg'
+import fiveToneUrl from './fiveTone.jpeg'
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
@@ -31,10 +33,36 @@ scene.add(pointlight);
 const pearlRadius = 100;
 const pearlWidthSegments = 64;
 const pearlHeightSegments = 64;
-const pearlGeo = new THREE.SphereGeometry(pearlRadius, pearlWidthSegments, pearlHeightSegments);
-const pearlMat = new THREE.MeshPhysicalMaterial();
-const pearlMesh = new THREE.Mesh(pearlGeo, pearlMat);
-scene.add(pearlMesh);
+const pearlGeometry = new THREE.SphereGeometry(pearlRadius, pearlWidthSegments, pearlHeightSegments);
+
+const pearlTextureLoader = new THREE.TextureLoader();
+
+const threeTone = pearlTextureLoader.load(threeToneUrl);
+threeTone.minFilter = THREE.NearestFilter;
+threeTone.magFilter = THREE.NearestFilter;
+
+const pearlMaterialThreeTone = new THREE.MeshToonMaterial({
+  color: 0x049ef4,
+  gradientMap: threeTone,
+});
+
+const pearl1 = new THREE.Mesh(pearlGeometry, pearlMaterialThreeTone);
+pearl1.position.y = 120;
+scene.add(pearl1);
+
+const fiveTone = pearlTextureLoader.load(fiveToneUrl);
+fiveTone.minFilter = THREE.NearestFilter;
+fiveTone.magFilter = THREE.NearestFilter;
+
+const pearlMaterialFiveTone = new THREE.MeshToonMaterial({
+  color: 0x049ef4,
+  gradientMap: fiveTone,
+});
+
+const pearl2 = new THREE.Mesh(pearlGeometry, pearlMaterialFiveTone);
+pearl2.position.y = -120;
+scene.add(pearl2);
+
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('.webgl'),

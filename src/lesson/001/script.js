@@ -1,6 +1,6 @@
 import './style.css';
-import threeToneUrl from './threeTone.jpeg'
-import fiveToneUrl from './fiveTone.jpeg'
+import threeToneUrl from './tones/threeTone.jpeg'
+import fiveToneUrl from './tones/fiveTone.jpeg'
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 

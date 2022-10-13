@@ -84,6 +84,11 @@ const renderer = new THREE.WebGLRenderer({
   antialias: true,
 });
 
+// Sets device pixel ratio. 
+// This is usually used for HiDPI device to prevent blurring output canvas.
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+// renderer.setSize
 // Resizes the output canvas to (width, height) with device pixel ratio taken into account, 
 // and also sets the viewport to fit that size, starting in (0, 0). 
 // Setting updateStyle to false prevents any style changes to the output canvas.
@@ -106,6 +111,7 @@ function onResize() {
   const height = window.innerHeight;
   
   renderer.setSize(width, height, updateStyle);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   camera.aspect = width / height;
   // Updates the camera projection matrix. 
@@ -113,3 +119,39 @@ function onResize() {
   camera.updateProjectionMatrix();
 }
 window.addEventListener('resize', onResize)
+
+function activateFullscreen(element) {
+  if (element.requestFullscreen) {
+    element.requestFullscreen();        // W3C spec
+  }
+  else if (element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();     // Firefox
+  }
+  else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();  // Safari
+  }
+  else if (element.msRequestFullscreen) {
+    element.msRequestFullscreen();      // IE/Edge
+  }
+}
+
+function deactivateFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  }
+}
+
+function onDblClick() {
+  const fullscreenElement = document.fullscreenElement
+  || document.mozFullScreenElemen
+  || document.webkitFullscreenElement;
+
+  fullscreenElement
+  ? deactivateFullscreen()
+  : activateFullscreen(renderer.domElement);
+}
+window.addEventListener('dblclick', onDblClick);

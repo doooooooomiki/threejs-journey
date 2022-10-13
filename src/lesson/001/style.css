@@ -5,6 +5,7 @@ html {
 body {
   height: 100%;
   margin: 0;
+  overflow: hidden;
   background-image: radial-gradient(#ffffff, #3f7b9d);
 }
 
@@ -14,4 +15,5 @@ canvas {
   left: 0;
   height: 100%;
   width: 100%;
+  outline: none;
 }

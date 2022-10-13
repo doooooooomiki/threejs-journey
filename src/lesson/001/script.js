@@ -53,6 +53,8 @@ const pearlMaterialThreeTone = new THREE.MeshToonMaterial({
   gradientMap: threeTone,
 });
 
+// Mesh
+// Class representing triangular polygon mesh based objects.
 const pearl1 = new THREE.Mesh(pearlGeometry, pearlMaterialThreeTone);
 pearl1.position.y = 120;
 
@@ -75,27 +77,39 @@ scene.add(pearlGroup);
 
 camera.lookAt(pearlGroup.position);
 
+// WebGLRenderer
+// The WebGL renderer displays your beautifully crafted scenes using WebGL.
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('.webgl'),
-  alpha: true,
   antialias: true,
 });
 
-renderer.setSize(
-  window.innerWidth, 
-  window.innerHeight
-);
+// Resizes the output canvas to (width, height) with device pixel ratio taken into account, 
+// and also sets the viewport to fit that size, starting in (0, 0). 
+// Setting updateStyle to false prevents any style changes to the output canvas.
+const updateStyle = false;
+renderer.setSize(window.innerWidth, window.innerHeight, updateStyle);
 
 const controls = new OrbitControls(camera, renderer.domElement);
+// controls.enabled = false;
 controls.enableDamping = true;
 
 function animation() {
-
   controls.update();
-
   renderer.render(scene, camera);
-
   window.requestAnimationFrame(animation);
 }
-
 window.requestAnimationFrame(animation);
+
+function onResize() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  
+  renderer.setSize(width, height, updateStyle);
+
+  camera.aspect = width / height;
+  // Updates the camera projection matrix. 
+  // Must be called after any change of parameters.
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', onResize)

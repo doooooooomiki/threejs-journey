@@ -3,8 +3,10 @@ import { resolve } from 'path';
 
 export default defineConfig({
   root: 'src',
+  publicDir: '../public',
   // https://vitejs.dev/guide/build.html#multi-page-app
   build: {
+    outDir: '../dist',
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'src/index.html'),

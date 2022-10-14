@@ -77,7 +77,7 @@ renderer.setSize(window.innerWidth, window.innerHeight, false);
 
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-renderer.setAnimationLoop(function() {
+renderer.setAnimationLoop(() => {
   controls.update();
   renderer.render(scene, camera);
 });

@@ -1,6 +1,16 @@
 import '/style.css';
+
+import urlTextureColor from './textures/color.jpg';
+import urlTextureAmbientOcclusionUrl from './textures/ambientOcclusion.jpg';
+import urlTextureHeight from './height.png';
+import urlTextureMetallic from './metallic.jpg';
+import urlTextureNormal from './normal.jpg';
+import urlTextureAlpha from './alpha.jpg';
+import urlTextureRoughness from './roughness.jpg';
+
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+
 import * as dat from 'dat.gui';
 
 const data = {
@@ -111,14 +121,15 @@ loadingManager.onError = function() {
  * TextureLoader( manager : LoadingManager )
  * .load ( url : String, onLoad : Function, onProgress : Function, onError : Function ) : Texture
  */
- const textureLoader = new THREE.TextureLoader(loadingManager);
- const textureColor = textureLoader.load("./textures/color.jpg");
- const textureAmbientOcclusion = textureLoader.load("./textures/ambientOcclusion.jpg");
- const textureHeight = textureLoader.load("./textures/height.png");
- const textureMetallic = textureLoader.load("./textures/metallic.jpg");
- const textureNormal = textureLoader.load("./textures/normal.jpg");
- const textureAlpha = textureLoader.load("./textures/alpha.jpg");
- const textureRoughness = textureLoader.load("./textures/roughness.jpg");
+const textureLoader = new THREE.TextureLoader(loadingManager);
+
+const textureColor = textureLoader.load(urlTextureColor);
+const textureAmbientOcclusion = textureLoader.load(urlTextureAmbientOcclusionUrl);
+const textureHeight = textureLoader.load(urlTextureHeight);
+const textureMetallic = textureLoader.load(urlTextureMetallic);
+const textureNormal = textureLoader.load(urlTextureNormal);
+const textureAlpha = textureLoader.load(urlTextureAlpha);
+const textureRoughness = textureLoader.load(urlTextureRoughness);
 
 /**
  * Mesh

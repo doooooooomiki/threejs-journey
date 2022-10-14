@@ -1,65 +1,100 @@
 import '/style.css';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
-console.log(OrbitControls);
+import * as dat from 'dat.gui';
 
-const cursor = {
-  x: 0,
-  y: 0
-}
-
-window.addEventListener('mousemove', (event) => {
-  cursor.x = event.clientX / window.innerWidth - 0.5;
-  cursor.y = -(event.clientY / window.innerWidth - 0.5);
-});
+const gui = new dat.GUI();
 
 const scene = new THREE.Scene();
 
-const fov = 75;
-const aspect = window.innerWidth / window.innerHeight;
-const near = 0.1;
-const far = 8;
-const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+const camera = new THREE.PerspectiveCamera();
+camera.fov = 75;
+camera.aspect = window.innerWidth / window.innerHeight;
+camera.updateProjectionMatrix();
+camera.near = 0.1;
+camera.far = 8;
 camera.position.x = 0;
 camera.position.y = 0;
 camera.position.z = 2;
 scene.add(camera);
 
-const geometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
-const material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-const cube = new THREE.Mesh(geometry, material);
+const cube = new THREE.Mesh();
+cube.geometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+cube.material = new THREE.MeshBasicMaterial({
+  color: 0x00ff00,
+  wireframe: true,
+});
 cube.position.set(0, 0, 0);
 scene.add(cube);
+
+// Debug
+const palette = {
+  color: 0x00ff00,
+};
+
+gui
+  .addColor(palette, 'color')
+  .onChange(() => cube.material.color.set(palette.color))
+  ;
+
+gui
+  .add(cube.position, 'x')
+  .min(-1)
+  .max(1)
+  .step(0.0001)
+  .name('cube x')
+  ;
+
+gui
+  .add(cube.position, 'y')
+  .min(-1)
+  .max(1)
+  .step(0.0001)
+  .name('cube y')
+  ;
+
+gui
+  .add(cube.position, 'z')
+  .min(-1)
+  .max(1)
+  .step(0.0001)
+  .name('cube z')
+  ;
+
+gui
+  .add(cube, 'visible')
+  ;
+
+gui
+  .add(cube.material, 'wireframe')
+  ;
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('.webgl'),
 });
 
-renderer.setSize(
-  renderer.domElement.clientWidth, 
-  renderer.domElement.clientHeight, 
-  false
-);
+renderer.setSize(window.innerWidth, window.innerHeight, false);
+
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+renderer.setAnimationLoop(function() {
+  controls.update();
+  renderer.render(scene, camera);
+});
 
 renderer.render(scene, camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
+function onResize() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
 
-function animation(timestamp) {
+  renderer.setSize(width, height, updateStyle);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 3;
-  // camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 3;
-  // camera.position.y = cursor.y * 5;
-
-  // camera.lookAt(cube.position);
-
-  controls.update();
-
-  renderer.render(scene, camera);
-
-  window.requestAnimationFrame(animation);
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
 }
-
-window.requestAnimationFrame(animation);
+window.addEventListener('resize', onResize)

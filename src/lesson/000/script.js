@@ -55,6 +55,7 @@ const camera = new THREE.PerspectiveCamera(
   data.camera.near,
   data.camera.far,
 );
+
 camera.position.x = 0;
 camera.position.y = 0;
 camera.position.z = 2;
@@ -77,6 +78,49 @@ pointlight.position.set(200, 200, 200);
 scene.add(pointlight);
 
 /**
+ * LoadingManager
+ * Handles and keeps track of loaded and pending data. 
+ * A default global instance of this class is created and used by loaders if not supplied manually
+ * https://threejs.org/docs/?q=loadingm#api/en/loaders/managers/LoadingManager
+ * 
+ * LoadingManager( onLoad : Function, onProgress : Function, onError : Function )
+ */
+const loadingManager = new THREE.LoadingManager();
+
+loadingManager.onStart = function() {
+  console.log("on start");
+};
+
+loadingManager.onLoad = function() {
+  console.log("on load");
+};
+
+loadingManager.onProgress = function() {
+  console.log("on progress");
+};
+
+loadingManager.onError = function() {
+  console.log("on error");
+};
+
+/**
+ * TextureLoader
+ * Class for loading a texture
+ * https://threejs.org/docs/?q=texture#api/en/loaders/TextureLoader
+ * 
+ * TextureLoader( manager : LoadingManager )
+ * .load ( url : String, onLoad : Function, onProgress : Function, onError : Function ) : Texture
+ */
+ const textureLoader = new THREE.TextureLoader(loadingManager);
+ const textureColor = textureLoader.load("./textures/color.jpg");
+ const textureAmbientOcclusion = textureLoader.load("./textures/ambientOcclusion.jpg");
+ const textureHeight = textureLoader.load("./textures/height.png");
+ const textureMetallic = textureLoader.load("./textures/metallic.jpg");
+ const textureNormal = textureLoader.load("./textures/normal.jpg");
+ const textureAlpha = textureLoader.load("./textures/alpha.jpg");
+ const textureRoughness = textureLoader.load("./textures/roughness.jpg");
+
+/**
  * Mesh
  * Class representing triangular polygon mesh based objects.
  * https://threejs.org/docs/?q=Mesh#api/en/objects/Mesh
@@ -89,8 +133,8 @@ const cube = new THREE.Mesh();
 
 cube.geometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
 cube.material = new THREE.MeshBasicMaterial({
-  color: data.cube.material.color,
-  wireframe: true,
+  // color: data.cube.material.color,
+  map: textureColor,
 });
 
 cube.position.set(0, 0, 0);
@@ -133,7 +177,6 @@ gui
   .add(cube.material, 'wireframe')
   ;
 
-
 /**
  * WebGLRenderer
  * The WebGL renderer displays your beautifully crafted scenes using WebGL.
@@ -150,7 +193,7 @@ renderer.setSize(window.innerWidth, window.innerHeight, data.renderer.updateStyl
 
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, data.renderer.maxPixelRatio));
 
-renderer.setAnimationLoop(() => {
+renderer.setAnimationLoop(function() {
   orbitControls.update();
   renderer.render(scene, camera);
 });

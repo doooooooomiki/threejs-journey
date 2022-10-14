@@ -1,12 +1,12 @@
 import '/style.css';
 
 import urlTextureColor from './textures/color.jpg';
-import urlTextureAmbientOcclusionUrl from './textures/ambientOcclusion.jpg';
-import urlTextureHeight from './textures/height.png';
-import urlTextureMetallic from './textures/metallic.jpg';
-import urlTextureNormal from './textures/normal.jpg';
-import urlTextureAlpha from './textures/alpha.jpg';
-import urlTextureRoughness from './textures/roughness.jpg';
+// import urlTextureAmbientOcclusionUrl from './textures/ambientOcclusion.jpg';
+// import urlTextureHeight from './textures/height.png';
+// import urlTextureMetallic from './textures/metallic.jpg';
+// import urlTextureNormal from './textures/normal.jpg';
+// import urlTextureAlpha from './textures/alpha.jpg';
+// import urlTextureRoughness from './textures/roughness.jpg';
 
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
@@ -18,7 +18,7 @@ const data = {
   camera: {
     fov: 75,
     aspect: window.innerWidth / window.innerHeight,
-    near: 1,
+    near: 0.01,
     far: 1000,
   },
 
@@ -124,12 +124,17 @@ loadingManager.onError = function() {
 const textureLoader = new THREE.TextureLoader(loadingManager);
 
 const textureColor = textureLoader.load(urlTextureColor);
-const textureAmbientOcclusion = textureLoader.load(urlTextureAmbientOcclusionUrl);
-const textureHeight = textureLoader.load(urlTextureHeight);
-const textureMetallic = textureLoader.load(urlTextureMetallic);
-const textureNormal = textureLoader.load(urlTextureNormal);
-const textureAlpha = textureLoader.load(urlTextureAlpha);
-const textureRoughness = textureLoader.load(urlTextureRoughness);
+// const textureAmbientOcclusion = textureLoader.load(urlTextureAmbientOcclusionUrl);
+// const textureHeight = textureLoader.load(urlTextureHeight);
+// const textureMetallic = textureLoader.load(urlTextureMetallic);
+// const textureNormal = textureLoader.load(urlTextureNormal);
+// const textureAlpha = textureLoader.load(urlTextureAlpha);
+// const textureRoughness = textureLoader.load(urlTextureRoughness);
+
+textureColor.repeat.x = 2;
+textureColor.repeat.y = 3;
+textureColor.wrapS = THREE.RepeatWrapping;
+textureColor.wrapT = THREE.RepeatWrapping;
 
 /**
  * Mesh

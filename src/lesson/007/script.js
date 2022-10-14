@@ -91,7 +91,7 @@ function onResize() {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
-  renderer.setSize(width, height, updateStyle);
+  renderer.setSize(width, height, false);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   camera.aspect = width / height;

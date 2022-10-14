@@ -2,11 +2,11 @@ import '/style.css';
 
 import urlTextureColor from './textures/color.jpg';
 import urlTextureAmbientOcclusionUrl from './textures/ambientOcclusion.jpg';
-import urlTextureHeight from './height.png';
-import urlTextureMetallic from './metallic.jpg';
-import urlTextureNormal from './normal.jpg';
-import urlTextureAlpha from './alpha.jpg';
-import urlTextureRoughness from './roughness.jpg';
+import urlTextureHeight from './textures/height.png';
+import urlTextureMetallic from './textures/metallic.jpg';
+import urlTextureNormal from './textures/normal.jpg';
+import urlTextureAlpha from './textures/alpha.jpg';
+import urlTextureRoughness from './textures/roughness.jpg';
 
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';

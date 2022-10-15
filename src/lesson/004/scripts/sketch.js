@@ -2,7 +2,9 @@ import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
 import fragment from '../shaders/fragment.glsl';
-import vertex from '../shaders/vertex.glsl';
+import arch from '../shaders/arch.vert';
+import wave from '../shaders/wave.vert';
+import noise from '../shaders/noise.vert';
 
 
 export class Sketch {
@@ -19,7 +21,7 @@ export class Sketch {
       1000,
     );
 
-    this.camera.position.z = 1;
+    this.camera.position.z = 2;
 
     this.scene.add(this.camera);
 
@@ -44,7 +46,6 @@ export class Sketch {
     this.orbitControls.enableDamping = true;
 
     window.addEventListener('resize', this.onWindowResize.bind(this));
-
   }
 
   onWindowResize() {
@@ -59,21 +60,59 @@ export class Sketch {
   }
 
   addObject() {
-    this.geometry = new THREE.PlaneGeometry( 1, 1 );
-    this.material = new THREE.MeshNormalMaterial();
+    this.geometry = new THREE.PlaneGeometry( 0.4, 0.4, 32, 32 );
 
-    this.shaderMaterial = new THREE.ShaderMaterial( {
+    this.noiseShaderMaterial = new THREE.ShaderMaterial( {
 
       side: THREE.DoubleSide,
+
+      wireframe: true,
     
-      vertexShader: vertex,
+      vertexShader: noise,
       
       fragmentShader: fragment,
     
     } );
 
-    this.mesh = new THREE.Mesh(this.geometry, this.shaderMaterial);
-    this.scene.add(this.mesh);
+    this.archShaderMaterial = new THREE.ShaderMaterial( {
+
+      side: THREE.DoubleSide,
+
+      wireframe: true,
+    
+      vertexShader: arch,
+      
+      fragmentShader: fragment,
+    
+    } );
+
+    this.waveShaderMaterial = new THREE.ShaderMaterial( {
+
+      side: THREE.DoubleSide,
+
+      wireframe: true,
+    
+      vertexShader: wave,
+      
+      fragmentShader: fragment,
+    
+    } );
+
+    this.group = new THREE.Group();
+
+    this.mesh1 = new THREE.Mesh(this.geometry, this.noiseShaderMaterial);
+    this.mesh1.position.y = -0.8;
+    this.group.add(this.mesh1);
+
+    this.mesh2 = new THREE.Mesh(this.geometry, this.archShaderMaterial);
+    this.group.add(this.mesh2);
+
+    this.mesh3 = new THREE.Mesh(this.geometry, this.waveShaderMaterial);
+    this.mesh3.position.y = 0.8;
+    this.group.add(this.mesh3);
+
+    this.scene.add(this.group);
+    this.camera.lookAt(this.group.position);
   }
 
   animationLoop() {

@@ -14,6 +14,7 @@ export default defineConfig({
         _001: resolve(__dirname, 'src/lesson/001/index.html'),
         _002: resolve(__dirname, 'src/lesson/002/index.html'),
         _003: resolve(__dirname, 'src/lesson/003/index.html'),
+        _004: resolve(__dirname, 'src/lesson/004/index.html'),
         _005: resolve(__dirname, 'src/lesson/005/index.html'),
         _006: resolve(__dirname, 'src/lesson/006/index.html'),
         _007: resolve(__dirname, 'src/lesson/007/index.html'),

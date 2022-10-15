@@ -76,11 +76,18 @@ float cnoise(vec3 P){
   return 2.2 * n_xyz;
 }
 
+varying float vNoise;
+uniform float time;
+
 void main() {
 
   vec3 newposition = position;
+
+  float noise = cnoise(vec3(position.x * 10., position.y * 10. + time, 0.));
+
+  vNoise = noise;
   
-  newposition.z += 0.04*cnoise(vec3(position.x * 10., position.y * 10., 0.)); // Classic Perlin 3D Noise 
+  newposition.z += 0.08 * noise;
 
   vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4( newposition, 1.0 );

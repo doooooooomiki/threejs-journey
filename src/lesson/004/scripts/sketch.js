@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
-import fragment from '../shaders/fragment.glsl';
+import fragment from '../shaders/fragment.frag';
+import colormix from '../shaders/colormix.frag';
 import arch from '../shaders/arch.vert';
 import wave from '../shaders/wave.vert';
 import noise from '../shaders/noise.vert';
@@ -60,17 +61,21 @@ export class Sketch {
   }
 
   addObject() {
-    this.geometry = new THREE.PlaneGeometry( 0.4, 0.4, 32, 32 );
+    this.geometry = new THREE.PlaneGeometry( 0.4, 0.4, 64, 64 );
 
     this.noiseShaderMaterial = new THREE.ShaderMaterial( {
 
       side: THREE.DoubleSide,
 
-      wireframe: true,
+      // wireframe: true,
+
+      uniforms: {
+        time: { value: 0 },
+      },
     
       vertexShader: noise,
       
-      fragmentShader: fragment,
+      fragmentShader: colormix,
     
     } );
 
@@ -79,6 +84,10 @@ export class Sketch {
       side: THREE.DoubleSide,
 
       wireframe: true,
+
+      uniforms: {
+        time: { value: 0 },
+      },
     
       vertexShader: arch,
       
@@ -91,6 +100,10 @@ export class Sketch {
       side: THREE.DoubleSide,
 
       wireframe: true,
+
+      uniforms: {
+        time: { value: 0 },
+      },
     
       vertexShader: wave,
       
@@ -116,8 +129,9 @@ export class Sketch {
   }
 
   animationLoop() {
-    // this.mesh.rotation.x = Math.sin(this.clock.getElapsedTime());
-    // this.mesh.rotation.y = Math.cos(this.clock.getElapsedTime());
+    this.noiseShaderMaterial.uniforms.time.value = this.clock.getElapsedTime();
+    this.archShaderMaterial.uniforms.time.value = this.clock.getElapsedTime();
+    this.waveShaderMaterial.uniforms.time.value = this.clock.getElapsedTime();
     this.renderer.render(this.scene, this.camera);
   }
 }

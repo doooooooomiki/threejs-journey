@@ -21,7 +21,7 @@ export class Sketch {
       1000,
     );
 
-    this.camera.position.z = 0.4;
+    this.camera.position.z = 0.6;
 
     this.scene.add(this.camera);
 

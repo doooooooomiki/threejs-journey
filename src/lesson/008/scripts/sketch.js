@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
-import colormix from '../shaders/colormix.frag';
+import ocean from '../shaders/ocean.frag';
 import noise from '../shaders/noise.vert';
+
+import oceanUrl from '../img/ines-alvarez.jpg';
 
 
 export class Sketch {
@@ -66,11 +68,12 @@ export class Sketch {
 
       uniforms: {
         time: { value: 0 },
+        oceanTexture: { value: new THREE.TextureLoader().load(oceanUrl) },
       },
     
       vertexShader: noise,
       
-      fragmentShader: colormix,
+      fragmentShader: ocean,
     
     } );
 
